@@ -2,7 +2,7 @@ import React from "react";
 import {View, StyleSheet, Text, Image, ScrollView} from "react-native";
 import Screen from "./../components/Screen";
 import ReadMore from "../components/ReadMore";
-import AppButton from "./../components/AppButton";
+import AppButton from "../components/forms/AppButton";
 
 function ProductDetails(props) {
 

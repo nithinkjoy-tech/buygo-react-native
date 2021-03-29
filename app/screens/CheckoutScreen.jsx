@@ -4,7 +4,7 @@ import Screen from "./../components/Screen";
 import colors from "../config/colors";
 import apiClient from "./../api/client";
 import Card from "./../components/Card";
-import AppButton from "./../components/AppButton";
+import AppButton from "../components/forms/AppButton";
 
 function CheckoutScreen({
   name,

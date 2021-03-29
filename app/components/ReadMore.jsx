@@ -9,7 +9,7 @@ function ReadMore({children}) {
         more
       </Text>
     );
-  };
+  }; 
 
   _renderRevealedFooter = handlePress => {
     return (
