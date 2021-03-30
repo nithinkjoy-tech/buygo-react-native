@@ -9,11 +9,12 @@ import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import CartOptions from "./app/components/CartOptions";
 import CartScreen from './app/screens/CartScreen';
+import ProductEditandAddScreen from './app/screens/ProductEditandAddScreen';
 
 export default function App() {
   return (
     <View style={styles.container}> 
-      <ProductsScreen /> 
+      <ProductEditandAddScreen /> 
     </View>
   );
 }
