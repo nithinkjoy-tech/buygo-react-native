@@ -1,22 +1,24 @@
 import React from "react";
-import {View, StyleSheet, Text} from "react-native";
+import {View, StyleSheet} from "react-native";
 import colors from "../config/colors";
 import AppButton from "./forms/AppButton";
+import handleCheckout from './../hooks/handleCheckout';
+import userApi from "../api/userApi"
 
-function CartOptions({onPressBuy,onPressRemove}) {
+function CartOptions({mobileId}) {
   return (
     <View style={styles.container}>
       <AppButton
         title="Buy Now"
         style={{borderRightWidth: 2, borderColor: colors.white, width: "50%"}}
         color="dodgerblue"
-        onPress={onPressBuy}
+        onPress={handleCheckout}
         />
       <AppButton
         title="Remove"
         style={{position: "absolute", alignSelf: "flex-end", width: "50%"}}
         color="red"
-        onPress={onPressRemove}
+        onPress={()=>userApi.removeCartItem(mobileId)}
       />
     </View>
   );

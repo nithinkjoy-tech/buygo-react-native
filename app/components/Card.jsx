@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 
-function Card({title, subtitle, onPress, imageUrl, CartOptions}) {
+function Card({title,mobileId, subtitle, onPress, imageUrl, CartOptions}) {
   return (
     <View style={{borderWidth: 1, borderColor: colors.white}}>
       <TouchableWithoutFeedback onPress={onPress}>
@@ -25,7 +25,7 @@ function Card({title, subtitle, onPress, imageUrl, CartOptions}) {
           </View>
         </View>
       </TouchableWithoutFeedback>
-      {CartOptions && <CartOptions />}
+      {CartOptions && <CartOptions mobileId={mobileId} />}
     </View>
   );
 }

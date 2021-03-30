@@ -8,10 +8,11 @@ import CheckoutScreen from "./app/screens/CheckoutScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import CartOptions from "./app/components/CartOptions";
+import CartScreen from './app/screens/CartScreen';
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
       <ProductsScreen /> 
     </View>
   );

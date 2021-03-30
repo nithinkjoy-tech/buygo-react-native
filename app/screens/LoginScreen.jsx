@@ -23,6 +23,7 @@ function LoginScreen(props) {
       return setError(response.data);
     }
     Storage.storeToken(response.data)
+    console.log("login success")
   };
 
   return (

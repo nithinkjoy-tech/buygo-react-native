@@ -5,6 +5,7 @@ import colors from "../config/colors";
 import apiClient from "./../api/client";
 import Card from "./../components/Card";
 import AppButton from "../components/forms/AppButton";
+import handleCheckout from './../hooks/handleCheckout';
 
 function CheckoutScreen({
   name,
@@ -27,18 +28,7 @@ function CheckoutScreen({
     getMobile();
   }, []);
 
-  handleCheckout = () => {
-    Alert.alert("Confirm", "Are you sure want to checkout", [
-      {
-        text: "Yes",
-        onPress: () => Alert.alert("Successfully ordered this item"),
-      },
-      {
-        text: "No",
-        style: "cancel",
-      },
-    ]);
-  };
+  
 
   return (
     <Screen style={styles.container}>

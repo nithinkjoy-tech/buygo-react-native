@@ -12,8 +12,7 @@ import {Button} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import {Text} from "react-native";
 import FilterContext from "./../context/filterContext";
-import Storage from "../auth/storage";
-import apiClient from './../api/client';
+import userApi from "../api/userApi";
 
 function NavBar({onPress}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,18 +22,17 @@ function NavBar({onPress}) {
     FilterContext
   );
 
-  const getNoOfCartItems=(async() =>{
-    const {_id}=await Storage.getUser();
-    const {data}=await apiClient.post("/users/getcartitems",{id:_id})
-    setNoOfCartItems(data.length)
-  })
+  const getNoOfCartItems = async () => {
+    const data = await userApi.getCartItems();
+    setNoOfCartItems(data.length);
+  };
 
   useEffect(() => {
-    getNoOfCartItems()
-  }, []); 
+    getNoOfCartItems();
+  }, []);
 
   return (
-    <View style={styles.navbar}>  
+    <View style={styles.navbar}>
       <View>
         <TextInput
           style={styles.input}
@@ -104,7 +102,7 @@ function NavBar({onPress}) {
           dropDownStyle={{backgroundColor: "#fafafa"}}
           onChangeItem={item => setMinValue(item.value)}
         />
-        <DropDownPicker
+        <DropDownPicker 
           items={[
             {label: "1000", value: 1000},
             {label: "3000", value: 3000},
