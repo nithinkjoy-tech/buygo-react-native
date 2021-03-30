@@ -22,7 +22,7 @@ function ProductsScreen(props) {
       data = data.filter(item =>
         item.mobileName.toLowerCase().includes(search)
       );
-    setMobiles(data);
+    setMobiles(data); 
   };
 
   useEffect(() => {

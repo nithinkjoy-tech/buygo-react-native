@@ -7,6 +7,7 @@ import SubmitButton from "../components/SubmitButton";
 import AppForm from "../components/forms/AppForm";
 import colors from "../config/colors";
 import apiClient from "./../api/client";
+import Storage from "../auth/storage"
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -19,8 +20,9 @@ function LoginScreen(props) {
   const loginUser = async data => {
     const response = await apiClient.post("/users/login", data);
     if (!response.ok) {
-      setError(response.data);
+      return setError(response.data);
     }
+    Storage.storeToken(response.data)
   };
 
   return (

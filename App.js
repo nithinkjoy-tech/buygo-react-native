@@ -12,7 +12,7 @@ import CartOptions from "./app/components/CartOptions";
 export default function App() {
   return (
     <View style={styles.container}>
-      <ProductsScreen />
+      <ProductsScreen /> 
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import {
   View,
   StyleSheet,
@@ -12,15 +12,29 @@ import {Button} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import {Text} from "react-native";
 import FilterContext from "./../context/filterContext";
+import Storage from "../auth/storage";
+import apiClient from './../api/client';
 
 function NavBar({onPress}) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [noOfCartItems, setNoOfCartItems] = useState();
 
   const {minValue, setMinValue, maxValue, setMaxValue, setSearch} = useContext(
     FilterContext
   );
+
+  const getNoOfCartItems=(async() =>{
+    const {_id}=await Storage.getUser();
+    const {data}=await apiClient.post("/users/getcartitems",{id:_id})
+    setNoOfCartItems(data.length)
+  })
+
+  useEffect(() => {
+    getNoOfCartItems()
+  }, []); 
+
   return (
-    <View style={styles.navbar}>
+    <View style={styles.navbar}>  
       <View>
         <TextInput
           style={styles.input}
@@ -52,7 +66,7 @@ function NavBar({onPress}) {
             size={30}
             style={[styles.search, {marginLeft: "83%"}]}
           >
-            <Badge value="999" status="error" />
+            <Badge value={noOfCartItems} status="error" />
           </Ionicons>
         </>
       </TouchableWithoutFeedback>
