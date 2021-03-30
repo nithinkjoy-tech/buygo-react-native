@@ -6,8 +6,9 @@ import NavBar from "../components/NavBar";
 import ListItemSeparator from "../components/ListItemSeperator";
 import apiClient from "../api/client";
 import FilterContext from "./../context/filterContext";
+import CartOptions from "../components/CartOptions";
 
-function ProductsScreen(props) {
+function CartScreen(props) {
   const [mobiles, setMobiles] = useState(null);
   const [minValue, setMinValue] = useState(1000);
   const [maxValue, setMaxValue] = useState(10000);
@@ -33,8 +34,6 @@ function ProductsScreen(props) {
     console.log(item, "pressed");
   };
 
-  if (!mobiles) return <Text>No Mobiles found</Text>;
-
   return (
     <FilterContext.Provider
       value={{minValue, setMinValue, maxValue, setMaxValue, setSearch}}
@@ -51,6 +50,7 @@ function ProductsScreen(props) {
                 imageUrl={item.imageUrl}
                 subtitle={item.price}
                 onPress={() => handlePress(item._id)}
+                CartOptions={CartOptions}
               />
             )}
           />
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductsScreen;
+export default CartScreen;

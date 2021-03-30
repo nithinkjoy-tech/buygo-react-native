@@ -6,25 +6,34 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from "react-native";
+import colors from "../config/colors";
 
-function Card({title, subtitle,onPress,imageUrl}) {
+function Card({title, subtitle, onPress, imageUrl, CartOptions}) {
   return (
-    <TouchableWithoutFeedback onPress={onPress} >
-      <View style={styles.container}>
-        <Image style={styles.image} source={{uri: imageUrl}} />
-        <View style={[styles.details,{paddingLeft:styles.image.width}]} >
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.feature}>${subtitle}</Text>
+    <View style={{borderWidth: 1, borderColor: colors.white}}>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <View
+          style={[
+            styles.container,
+            CartOptions && {marginBottom: 0, marginTop: 15},
+          ]}
+        >
+          <Image style={styles.image} source={{uri: imageUrl}} />
+          <View style={[styles.details, {paddingLeft: styles.image.width}]}>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.feature}>${subtitle}</Text>
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+      {CartOptions && <CartOptions />}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    marginBottom:15,
+    marginBottom: 15,
   },
   image: {
     overflow: "hidden",
@@ -35,17 +44,17 @@ const styles = StyleSheet.create({
   title: {
     padding: 10,
     color: "black",
-    fontSize:25,
-    fontWeight:"bold"
+    fontSize: 25,
+    fontWeight: "bold",
   },
   feature: {
     padding: 10,
-    fontSize:20,
+    fontSize: 20,
     color: "green",
   },
   details: {
     position: "absolute",
-  }
+  },
 });
 
 export default Card;

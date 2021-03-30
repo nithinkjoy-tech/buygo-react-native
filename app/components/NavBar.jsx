@@ -5,23 +5,28 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from "react-native";
+import {Badge} from "react-native-elements";
 import {Ionicons} from "@expo/vector-icons";
-import {SearchBar} from "react-native-elements";
 import {Modal} from "react-native";
 import {Button} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import {Text} from "react-native";
-import FilterContext from './../context/filterContext';
+import FilterContext from "./../context/filterContext";
 
 function NavBar({onPress}) {
-  const [searchBox, setSearchBox] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  
-  const {minValue,setMinValue,maxValue,setMaxValue,setSearch}=useContext(FilterContext)
+
+  const {minValue, setMinValue, maxValue, setMaxValue, setSearch} = useContext(
+    FilterContext
+  );
   return (
     <View style={styles.navbar}>
       <View>
-        <TextInput style={styles.input} placeholder="Search" onChangeText={(value)=>setSearch(value)} />
+        <TextInput
+          style={styles.input}
+          placeholder="Search"
+          onChangeText={value => setSearch(value)}
+        />
         <Ionicons
           style={[styles.search, {marginLeft: styles.input.width}]}
           name="search"
@@ -31,13 +36,25 @@ function NavBar({onPress}) {
       </View>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
         <Ionicons
-          style={[styles.search, {marginLeft: styles.input.width + 114}]}
+          style={[styles.search, {marginLeft: styles.input.width + 50}]}
           name="filter"
           size={30}
           color="white"
         >
           Filter
         </Ionicons>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback>
+        <>
+          <Ionicons
+            name="cart"
+            color="white"
+            size={30}
+            style={[styles.search, {marginLeft: "83%"}]}
+          >
+            <Badge value="999" status="error" />
+          </Ionicons>
+        </>
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">
         <Button
@@ -50,7 +67,11 @@ function NavBar({onPress}) {
         />
         <Text style={{marginBottom: 10}}>Select minimum and maximum price</Text>
 
-        <Button style={{marginBottom:10,}} title="Apply" onPress={() => setModalVisible(false)} />
+        <Button
+          style={{marginBottom: 10}}
+          title="Apply"
+          onPress={() => setModalVisible(false)}
+        />
 
         <DropDownPicker
           items={[
@@ -61,7 +82,7 @@ function NavBar({onPress}) {
             {label: "10000", value: 10000},
           ]}
           defaultValue={minValue}
-          containerStyle={{height: 40,marginVertical:20}}
+          containerStyle={{height: 40, marginVertical: 20}}
           style={{backgroundColor: "#fafafa"}}
           itemStyle={{
             justifyContent: "flex-start",
@@ -78,13 +99,12 @@ function NavBar({onPress}) {
             {label: "10000", value: 10000},
           ]}
           defaultValue={maxValue}
-          containerStyle={{height: 40,marginBottom:15,}}
-          style={{backgroundColor: "#fafafa",}}
+          containerStyle={{height: 40, marginBottom: 15}}
+          style={{backgroundColor: "#fafafa"}}
           itemStyle={{
-            justifyContent: "flex-start"
-            ,
+            justifyContent: "flex-start",
           }}
-          dropDownStyle={{backgroundColor: "#fafafa",}}
+          dropDownStyle={{backgroundColor: "#fafafa"}}
           onChangeItem={item => setMaxValue(item.value)}
         />
       </Modal>
@@ -110,9 +130,9 @@ const styles = StyleSheet.create({
     height: "100%",
     padding: 3,
   },
-  modal:{
+  modal: {
     position: "relative",
-  }
+  },
 });
 
 export default NavBar;

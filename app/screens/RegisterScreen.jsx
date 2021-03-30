@@ -1,27 +1,38 @@
-import React from "react";
-import {StyleSheet} from "react-native";
+import React, {useEffect, useState} from "react";
+import {StyleSheet, Text} from "react-native";
 import Screen from "./../components/Screen";
 import * as Yup from "yup";
 import AppFormField from "../components/forms/AppFormField";
 import SubmitButton from "../components/SubmitButton";
 import AppForm from "../components/forms/AppForm";
 import colors from "../config/colors";
+import apiClient from "./../api/client";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(4).label("Password"),
   name: Yup.string().required().label("Name"),
-  address: Yup.string().required().label("Address")
+  address: Yup.string().required().label("Address"),
 });
 
 function RegisterScreen(props) {
+  const [error, setError] = useState();
+
+  const registerUser = async data => {
+    const response = await apiClient.post("/users/register", data);
+    if (!response.ok) {
+      setError(response.data);
+    }
+  };
+
   return (
     <Screen>
       <AppForm
         initialValues={{email: "", password: "", name: "", address: ""}}
-        onSubmit={values => console.log(values)}
+        onSubmit={values => registerUser(values)}
         validationSchema={validationSchema}
       >
+        <Text style={{color: "red", padding: 5, fontSize: 24}}>{error}</Text>
         <AppFormField
           autoCapitalize="none"
           autoCorrect={false}
