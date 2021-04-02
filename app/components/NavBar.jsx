@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from "react-native";
+import { EvilIcons } from '@expo/vector-icons'; 
 import {Badge} from "react-native-elements";
 import {Ionicons} from "@expo/vector-icons";
 import {Modal} from "react-native";
@@ -13,23 +14,30 @@ import DropDownPicker from "react-native-dropdown-picker";
 import {Text} from "react-native";
 import FilterContext from "./../context/filterContext";
 import userApi from "../api/userApi";
+import AppButton from "./forms/AppButton";
+import storage from "../auth/storage";
+import CartContext from './../context/cartContext';
 
-function NavBar({onPress}) {
+function NavBar({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [noOfCartItems, setNoOfCartItems] = useState();
 
-  const {minValue, setMinValue, maxValue, setMaxValue, setSearch} = useContext(
+  const {minValue, setMinValue, maxValue, setMaxValue, setSearch,} = useContext(
     FilterContext
   );
 
+  const {isLoggedIn,noOfCartItems,setNoOfCartItems}= useContext(CartContext)
+
   const getNoOfCartItems = async () => {
+    if (!isLoggedIn) return console.log("returned") ;
     const data = await userApi.getCartItems();
     setNoOfCartItems(data.length);
   };
-
+  
   useEffect(() => {
-    getNoOfCartItems();
-  }, []);
+    getNoOfCartItems(); 
+  }, [isLoggedIn]);
+  
+
 
   return (
     <View style={styles.navbar}>
@@ -58,19 +66,27 @@ function NavBar({onPress}) {
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback>
         <>
-          <Ionicons
+          {isLoggedIn?<Ionicons 
             name="cart"
             color="white"
             size={30}
             style={[styles.search, {marginLeft: "83%"}]}
+            onPress={()=>navigation.navigate("Cart")}
           >
             <Badge value={noOfCartItems} status="error" />
-          </Ionicons>
+          </Ionicons>:<EvilIcons 
+            name="navicon" 
+            color="white"
+            size={40}
+            style={[styles.search, {marginLeft: "83%"}]}
+            onPress={()=>navigation.openDrawer()} 
+          >
+          </EvilIcons>}
         </>
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">
         <Button
-          title="close"
+        title="close"
           onPress={() => {
             setMinValue(1000);
             setMaxValue(10000);

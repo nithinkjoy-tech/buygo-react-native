@@ -1,17 +1,17 @@
 import React from "react";
 import {View, StyleSheet, Text, TouchableWithoutFeedback} from "react-native";
 
-function AppButton({title, color, style, onPress}) {
+function AppButton({title, color, style, onPress,textColor="black"}) {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.button, {backgroundColor: color}, style]}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title,{color:textColor}]}>{title}</Text>
       </View>
     </TouchableWithoutFeedback>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
   button: {
     width: 130,
     height: 45,

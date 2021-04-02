@@ -7,6 +7,10 @@ import SubmitButton from "../components/SubmitButton";
 import AppForm from "../components/forms/AppForm";
 import colors from "../config/colors";
 import apiClient from "./../api/client";
+import productApi from "../api/productApi";
+import userApi from "../api/userApi";
+import storage from "../auth/storage";
+import pick from "lodash/pick";
 
 function ProductEditandAddScreen(props) {
   const validationSchema = Yup.object().shape({
@@ -21,18 +25,47 @@ function ProductEditandAddScreen(props) {
     imageUrl: Yup.string().required(),
   });
 
+  const [initialValues, setInitialValues] = useState({
+    mobileName: "",
+    feature1: "",
+    feature2: "",
+    feature3: "",
+    feature4: "",
+    price: "",
+    description: "",
+    numberInStock: "",
+    imageUrl: "",
+  });
+
+  const getMobileById = async () => {
+    const data = await productApi.getMobileById("5f7c13de8f3e5c55c0dfdb21");
+    setInitialValues(pick(data, Object.keys(initialValues)));
+  };
+
+  useEffect(() => {
+    getMobileById();
+  }, []);
+
+  const handleSubmit = (mobileData,id) => {
+    // const isAdmin=await storage.getIsAdmin()
+    // if(isAdmin){
+    if (!id) return productApi.createNewMobile(mobileData);
+    productApi.updateMobileById("5f7c13de8f3e5c55c0dfdb21", mobileData);
+    // }
+  };
+ 
   return (
     <Screen>
       <AppForm
-        initialValues={{mobileName: "", feature1: "",feature2: "",feature3: "",feature4: "", price: "", description: "",numberInStock: "", imageUrl:""}}
-        onSubmit={values => registerUser(values)}
+        initialValues={initialValues}
+        onSubmit={values => handleSubmit(values)}
         validationSchema={validationSchema}
       >
         <AppFormField
           autoCapitalize="none"
           autoCorrect={false}
           icon="account"
-          name="name"
+          name="mobileName"
           placeholder="Name"
         />
         <AppFormField
@@ -90,7 +123,7 @@ function ProductEditandAddScreen(props) {
           autoCapitalize="none"
           autoCorrect={false}
           icon="link"
-          name="ImageUrl"
+          name="imageUrl"
           placeholder="Image Url"
         />
         <SubmitButton title="Save" color={colors.secondary} />

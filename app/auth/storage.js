@@ -19,10 +19,19 @@ const getToken = async () => {
   }
 };
 
+const getUserId = async () => {
+  const data = await getUser();
+  return data?data._id:null;
+};
+
+const getIsAdmin = async () => {
+  const data = await getUser();
+  return data?.isAdmin;
+};
+ 
 const getUser = async () => {
   const token = await getToken();
-  console.log("token",jwtDecode(token))
-  return token ? jwtDecode(token) : null;
+  return token ? jwtDecode(token) : false;
 };
 
 const removeToken = async () => { 
@@ -33,4 +42,4 @@ const removeToken = async () => {
   }
 };
 
-export default { getToken, getUser, removeToken, storeToken };
+export default { getToken, getUser, removeToken, storeToken,getUserId,getIsAdmin };

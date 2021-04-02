@@ -8,14 +8,17 @@ import AppForm from "../components/forms/AppForm";
 import colors from "../config/colors";
 import apiClient from "./../api/client";
 import Storage from "../auth/storage"
+import CartContext from "../context/cartContext";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(4).label("Password"),
 });
 
-function LoginScreen(props) {
+function LoginScreen({navigation}) {
   const [error, setError] = useState();
+
+  const {setIsLoggedIn}= useContext(CartContext)
 
   const loginUser = async data => {
     const response = await apiClient.post("/users/login", data);
@@ -23,7 +26,8 @@ function LoginScreen(props) {
       return setError(response.data);
     }
     Storage.storeToken(response.data)
-    console.log("login success")
+    setIsLoggedIn(true)
+    navigation.navigate("Products")
   };
 
   return (

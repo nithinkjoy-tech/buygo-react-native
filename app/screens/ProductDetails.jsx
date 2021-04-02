@@ -1,47 +1,95 @@
-import React from "react";
+import React, {useEffect, useState,useContext} from "react";
 import {View, StyleSheet, Text, Image, ScrollView} from "react-native";
 import Screen from "./../components/Screen";
 import ReadMore from "../components/ReadMore";
 import AppButton from "../components/forms/AppButton";
+import productApi from "../api/productApi";
+import handleCheckout from "../hooks/handleCheckout";
+import userApi from "../api/userApi";
+import storage from "../auth/storage";
+import CartContext from "../context/cartContext";
 
-function ProductDetails(props) {
+function ProductDetails({navigation, route}) {
+  const [mobile, setMobile] = useState(null);
+  const [isAlreadyInCart, setIsAlreadyInCart] = useState(false);
+  const [cartItems, setCartItems] = useState(null);
+  const {mobileId} = route.params;
 
-  handleBuy=()=>{
+  const {setNoOfCartItems,noOfCartItems} = useContext(CartContext);
 
-  }
+  handleBuy = () => {
+    handleCheckout();
+  };
+
+  addToCart = async (mobileId, userId) => {
+    const {status} = await userApi.addItemToCart(mobileId, userId);
+    if(status ===200) setNoOfCartItems(noOfCartItems+1)
+  };
+
+  getMobileDetails = async () => {
+    const mobile = await productApi.getMobileById(mobileId);
+    setMobile(mobile);
+  };
+
+  getCartItems = async () => {
+    const data = await userApi.getCartItems();
+    setCartItems(data);
+  };
+
+  checkIfAlreadyInCart = () => {
+    if (!cartItems) return
+    const data = cartItems.filter(mobile => mobile._id === mobileId);
+    if (data[0]) setIsAlreadyInCart(true);
+  };
+
+  useEffect(() => {
+    getMobileDetails();
+    getCartItems();
+  }, []);
+
+  useEffect(() => {
+    checkIfAlreadyInCart();
+  }, [mobile, cartItems]);
+
+  if (!mobile) return null;
 
   return (
     <Screen style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Image style={styles.image} source={require("../assets/mosh.jpg")} />
+        <Image style={styles.image} source={{uri: mobile.imageUrl}} />
         <View style={{flex: 1}}>
-          <Text style={styles.title}>hello</Text>
-          <Text style={styles.feature}>new feature</Text>
-          <Text style={styles.feature}>new feature</Text>
-          <Text style={styles.feature}>new feature</Text>
-          <Text style={styles.feature}>new feature</Text>
-          <Text style={styles.price}>$100 </Text>
-          <ReadMore>
-            If you are a travel blogger, gamer, entertainment seeker, or a
-            person who loves a high-end personal device, then the Redmi 8 has
-            been created to meet your needs. This smartphone features a 15.8-cm
-            (6.22) Dot Notch Display, a 12 MP + 2 MP AI Dual Camera, and a 5000
-            mAh High-capacity Battery to offer detailed views of the stunning
-            photos that you can click all day long without running out of
-            battery life.
-          </ReadMore>
+          <Text style={styles.title}>{mobile.mobileName}</Text>
+          <Text style={styles.feature}>{mobile.feature1}</Text>
+          <Text style={styles.feature}>{mobile.feature2}</Text>
+          <Text style={styles.feature}>{mobile.feature3}</Text>
+          <Text style={styles.feature}>{mobile.feature4}</Text>
+          <Text style={styles.price}>{mobile.price}</Text>
+          <ReadMore>{mobile.description}</ReadMore>
           <View style={styles.buttonContainer}>
             <AppButton
               title="buy now"
               color="orangered"
               style={styles.button1Style}
-              onPress={()=>handleBuy()}
+              onPress={() => handleBuy()}
             />
-            <AppButton
-              title="add to cart"
-              color="orange"
-              style={styles.button2Style}
-            />
+            {isAlreadyInCart ? (
+              <AppButton
+                title="go to cart"
+                color="orange"
+                style={styles.button2Style}
+                onPress={() => navigation.navigate("Cart")}
+              />
+            ) : (
+              <AppButton
+                title="add to cart"
+                color="orange"
+                style={styles.button2Style}
+                onPress={async () => {
+                  await addToCart(mobile._id, await storage.getUserId());
+                  setIsAlreadyInCart(true)
+                }}
+              />
+            )}
           </View>
         </View>
       </ScrollView>

@@ -10,6 +10,7 @@ function AppForm({initialValues, onSubmit, children, validationSchema}) {
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
+      enableReinitialize
     >
       {() => <React.Fragment>{children}</React.Fragment>}
     </Formik>
