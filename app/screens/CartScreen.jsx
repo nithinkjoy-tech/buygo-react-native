@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, StyleSheet, FlatList, Text} from "react-native";
+import {View, StyleSheet, FlatList} from "react-native";
 import Card from "../components/Card";
 import Screen from "../components/Screen";
 import CartOptions from "../components/CartOptions";

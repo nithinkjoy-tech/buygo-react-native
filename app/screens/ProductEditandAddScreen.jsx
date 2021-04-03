@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, Text} from "react-native";
+import {StyleSheet} from "react-native";
 import Screen from "./../components/Screen";
 import * as Yup from "yup";
 import AppFormField from "../components/forms/AppFormField";
 import SubmitButton from "../components/SubmitButton";
 import AppForm from "../components/forms/AppForm";
 import colors from "../config/colors";
-import apiClient from "./../api/client";
 import productApi from "../api/productApi";
-import userApi from "../api/userApi";
-import storage from "../auth/storage";
 import pick from "lodash/pick";
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage, } from "react-native-flash-message";
 
 function ProductEditandAddScreen({navigation,route}) {
 

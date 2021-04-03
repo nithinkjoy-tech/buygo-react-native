@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, StyleSheet, Text, Alert} from "react-native";
+import {View, StyleSheet, Text} from "react-native";
 import Screen from "./../components/Screen";
 import colors from "../config/colors";
 import apiClient from "./../api/client";

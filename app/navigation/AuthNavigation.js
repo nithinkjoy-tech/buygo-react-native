@@ -1,11 +1,8 @@
 import React, {useContext} from "react";
 import {createDrawerNavigator} from "@react-navigation/drawer";
-import {Alert, View, StyleSheet, Button} from "react-native";
-import ProductsScreen from "./../screens/ProductsScreen";
+import {View, StyleSheet, Button} from "react-native";
 import LoginScreen from "./../screens/LoginScreen";
 import RegisterScreen from "./../screens/RegisterScreen";
-import NavBar from "./../components/NavBar";
-import CartScreen from "./../screens/CartScreen";
 import CartNavigator from "./CartNavigator";
 import CartContext from "./../context/cartContext";
 import storage from "../auth/storage";

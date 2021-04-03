@@ -1,5 +1,4 @@
 import React from "react";
-import {View, StyleSheet} from "react-native";
 import { Formik } from 'formik';
 import { ScrollView } from "react-native";
 
@@ -17,9 +16,5 @@ function AppForm({initialValues, onSubmit, children, validationSchema}) {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default AppForm;

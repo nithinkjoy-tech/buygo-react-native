@@ -8,7 +8,7 @@ function AppFormField({name,...otherProps}) {
   const {setFieldTouched, handleChange, errors, touched,values} = useFormikContext();
 
   return (
-    <View style={styles.container}>
+    <View>
       <AppTextInput
         onBlur={() => setFieldTouched(name)}
         onChangeText={handleChange(name)}
@@ -20,8 +20,5 @@ function AppFormField({name,...otherProps}) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default AppFormField;

@@ -1,5 +1,5 @@
 import React, {useState,useContext} from "react";
-import {View, Text, StyleSheet} from "react-native";
+import { Text} from "react-native";
 import Screen from "./../components/Screen";
 import * as Yup from "yup";
 import AppFormField from "../components/forms/AppFormField";
@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
 function LoginScreen({navigation}) {
   const [error, setError] = useState();
 
-  const {setIsLoggedIn,isAdmin, setIsAdmin}= useContext(CartContext)
+  const {setIsLoggedIn, setIsAdmin}= useContext(CartContext)
 
   const loginUser = async data => {
     const response = await apiClient.post("/users/login", data);

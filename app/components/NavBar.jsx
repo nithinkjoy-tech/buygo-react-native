@@ -4,40 +4,37 @@ import {
   StyleSheet,
   TextInput,
   TouchableWithoutFeedback,
+  Text,
+  Button,
+  Modal,
 } from "react-native";
-import { EvilIcons } from '@expo/vector-icons'; 
+import {EvilIcons, Ionicons} from "@expo/vector-icons";
 import {Badge} from "react-native-elements";
-import {Ionicons} from "@expo/vector-icons";
-import {Modal} from "react-native";
-import {Button} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import {Text} from "react-native";
 import FilterContext from "./../context/filterContext";
 import userApi from "../api/userApi";
-import AppButton from "./forms/AppButton";
-import storage from "../auth/storage";
-import CartContext from './../context/cartContext';
+import CartContext from "./../context/cartContext";
 
 function NavBar({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const {minValue, setMinValue, maxValue, setMaxValue, setSearch,} = useContext(
+  const {minValue, setMinValue, maxValue, setMaxValue, setSearch} = useContext(
     FilterContext
   );
 
-  const {isLoggedIn,noOfCartItems,setNoOfCartItems,isAdmin}= useContext(CartContext)
+  const {isLoggedIn, noOfCartItems, setNoOfCartItems, isAdmin} = useContext(
+    CartContext
+  );
 
   const getNoOfCartItems = async () => {
-    if (!isLoggedIn) return console.log("returned") ;
+    if (!isLoggedIn) return console.log("returned");
     const data = await userApi.getCartItems();
     setNoOfCartItems(data.length);
   };
-  
-  useEffect(() => {
-    getNoOfCartItems(); 
-  }, [isLoggedIn]);
-  
 
+  useEffect(() => {
+    getNoOfCartItems();
+  }, [isLoggedIn]);
 
   return (
     <View style={styles.navbar}>
@@ -66,35 +63,40 @@ function NavBar({navigation}) {
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback>
         <>
-          {(isLoggedIn&&!isAdmin)&&<Ionicons 
-            name="cart"
-            color="white"
-            size={30}
-            style={[styles.search, {marginLeft: "71%"}]}
-            onPress={()=>navigation.navigate("Cart")}
-          >
-            <Badge value={noOfCartItems} status="error" />
-          </Ionicons>}
-          {!isLoggedIn&&<EvilIcons 
-            name="navicon"  
-            color="white"
-            size={40}
-            style={[styles.search, {marginLeft: "83%"}]}
-            onPress={()=>navigation.openDrawer()} 
-          >
-          </EvilIcons>}
-          {isLoggedIn&&<EvilIcons 
-            name="navicon" 
-            color="white"
-            size={40}
-            style={[styles.search, {marginLeft: "86%"}]}
-            onPress={()=>navigation.openDrawer()} 
-          ></EvilIcons>}
+          {isLoggedIn && !isAdmin && (
+            <Ionicons
+              name="cart"
+              color="white"
+              size={30}
+              style={[styles.search, {marginLeft: "71%"}]}
+              onPress={() => navigation.navigate("Cart")}
+            >
+              <Badge value={noOfCartItems} status="error" />
+            </Ionicons>
+          )}
+          {!isLoggedIn && (
+            <EvilIcons
+              name="navicon"
+              color="white"
+              size={40}
+              style={[styles.search, {marginLeft: "83%"}]}
+              onPress={() => navigation.openDrawer()}
+            ></EvilIcons>
+          )}
+          {isLoggedIn && (
+            <EvilIcons
+              name="navicon"
+              color="white"
+              size={40}
+              style={[styles.search, {marginLeft: "86%"}]}
+              onPress={() => navigation.openDrawer()}
+            ></EvilIcons>
+          )}
         </>
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">
         <Button
-        title="close"
+          title="close"
           onPress={() => {
             setMinValue(1000);
             setMaxValue(10000);
@@ -126,7 +128,7 @@ function NavBar({navigation}) {
           dropDownStyle={{backgroundColor: "#fafafa"}}
           onChangeItem={item => setMinValue(item.value)}
         />
-        <DropDownPicker 
+        <DropDownPicker
           items={[
             {label: "1000", value: 1000},
             {label: "3000", value: 3000},

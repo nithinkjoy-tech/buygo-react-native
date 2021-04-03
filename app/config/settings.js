@@ -2,13 +2,13 @@ import Constants from "expo-constants";
 
 const settings = {
   dev: {
-    apiUrl: "http://buygoapi.herokuapp.com",
+    apiUrl: "https://buygoapi.herokuapp.com",
   },
   staging: {
-    apiUrl: "http://buygoapi.herokuapp.com",
+    apiUrl: "https://buygoapi.herokuapp.com",
   },
   prod: {
-    apiUrl: "http://buygoapi.herokuapp.com",
+    apiUrl: "https://buygoapi.herokuapp.com",
   },
 };
 

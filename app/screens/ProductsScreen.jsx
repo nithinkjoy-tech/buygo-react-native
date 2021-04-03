@@ -15,10 +15,9 @@ function ProductsScreen({navigation}) {
   const [minValue, setMinValue] = useState(1000);
   const [maxValue, setMaxValue] = useState(10000);
   const [search, setSearch] = useState(null);
-  // const [] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  const {isAdmin, setIsAdmin}=useContext(CartContext)
+  const {isAdmin}=useContext(CartContext)
 
   const getMobiles = async () => {
     let {data} = await apiClient.get("/mobiles");
@@ -33,10 +32,6 @@ function ProductsScreen({navigation}) {
     setMobiles(data);
     setRefreshing(false)
   };
-
-  // const getIsAdmin = async () => {
-  //   setIsAdmin(await storage.getIsAdmin());
-  // };
 
   useEffect(() => {
     getMobiles();
