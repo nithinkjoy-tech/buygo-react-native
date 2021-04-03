@@ -14,12 +14,13 @@ export default function App() {
     setIsLoggedIn(await storage.getUser());
   };
 
-  const setIsAdmin = async () => {
+  const getIsAdmin = async () => {
     setIsAdmin(await storage.getIsAdmin());
   };
 
   useEffect(() => {
     getIsLoggedIn();
+    getIsAdmin()
   }, []);
 
   return (
