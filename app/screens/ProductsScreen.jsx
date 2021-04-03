@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from "react";
-import {View, StyleSheet, FlatList, Text} from "react-native";
+import {View, StyleSheet, FlatList, Text,RefreshControl} from "react-native";
 import Card from "../components/Card";
 import Screen from "../components/Screen";
 import NavBar from "../components/NavBar";
@@ -8,13 +8,17 @@ import FilterContext from "./../context/filterContext";
 import AppButton from "../components/forms/AppButton";
 import colors from "../config/colors";
 import storage from "../auth/storage";
+import CartContext from "../context/cartContext";
 
 function ProductsScreen({navigation}) {
   const [mobiles, setMobiles] = useState(null);
   const [minValue, setMinValue] = useState(1000);
   const [maxValue, setMaxValue] = useState(10000);
   const [search, setSearch] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  // const [] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const {isAdmin, setIsAdmin}=useContext(CartContext)
 
   const getMobiles = async () => {
     let {data} = await apiClient.get("/mobiles");
@@ -27,18 +31,19 @@ function ProductsScreen({navigation}) {
         item.mobileName.toLowerCase().includes(search)
       );
     setMobiles(data);
+    setRefreshing(false)
   };
 
-  const getIsAdmin = async () => {
-    setIsAdmin(await storage.getIsAdmin());
-  };
+  // const getIsAdmin = async () => {
+  //   setIsAdmin(await storage.getIsAdmin());
+  // };
 
   useEffect(() => {
     getMobiles();
-    getIsAdmin();
   }, [minValue, maxValue, search]);
 
   handlePress = mobileId => {
+    if(isAdmin) return navigation.navigate("ProductEdit", {mobileId});
     navigation.navigate("ProductDetails", {mobileId});
   };
 
@@ -61,12 +66,17 @@ function ProductsScreen({navigation}) {
             title="Add Mobile"
             color={colors.secondary}
             style={{width: "100%", marginVertical: 5}}
+            onPress={() =>navigation.navigate("ProductEdit")}
           />
         )}
         <View style={{flex: 1, backgroundColor: "#f8f4f4"}}>
           <FlatList
             data={mobiles}
             keyExtractor={item => item._id.toString()}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{
+              setRefreshing(true)
+              getMobiles()
+            }} />}
             renderItem={({item}) => (
               <Card
                 title={item.mobileName}
@@ -79,7 +89,7 @@ function ProductsScreen({navigation}) {
         </View>
       </Screen>
     </FilterContext.Provider>
-  );
+  ); 
 }
 
 const styles = StyleSheet.create({

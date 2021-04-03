@@ -11,8 +11,12 @@ import productApi from "../api/productApi";
 import userApi from "../api/userApi";
 import storage from "../auth/storage";
 import pick from "lodash/pick";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
-function ProductEditandAddScreen(props) {
+function ProductEditandAddScreen({navigation,route}) {
+
+  const mobileId=route.params?.mobileId
+
   const validationSchema = Yup.object().shape({
     mobileName: Yup.string().required(),
     feature1: Yup.string().required().min(3),
@@ -24,6 +28,13 @@ function ProductEditandAddScreen(props) {
     numberInStock: Yup.number().required(),
     imageUrl: Yup.string().required(),
   });
+
+  const displayMessage=(message)=>{
+    showMessage({
+      message,
+      type: "info",
+    })
+  }
 
   const [initialValues, setInitialValues] = useState({
     mobileName: "",
@@ -38,7 +49,8 @@ function ProductEditandAddScreen(props) {
   });
 
   const getMobileById = async () => {
-    const data = await productApi.getMobileById("5f7c13de8f3e5c55c0dfdb21");
+    if(!mobileId) return
+    const data = await productApi.getMobileById(mobileId);
     setInitialValues(pick(data, Object.keys(initialValues)));
   };
 
@@ -46,12 +58,16 @@ function ProductEditandAddScreen(props) {
     getMobileById();
   }, []);
 
-  const handleSubmit = (mobileData,id) => {
-    // const isAdmin=await storage.getIsAdmin()
-    // if(isAdmin){
-    if (!id) return productApi.createNewMobile(mobileData);
-    productApi.updateMobileById("5f7c13de8f3e5c55c0dfdb21", mobileData);
-    // }
+  const handleSubmit = async(mobileData) => {
+    if (!mobileId) {
+      await productApi.createNewMobile(mobileData)
+      displayMessage("Succesfully added a new product")
+    }else{
+      await productApi.updateMobileById(mobileId, mobileData);
+      displayMessage("Succesfully modified your product details")
+    }
+
+    navigation.navigate("Products")
   };
  
   return (

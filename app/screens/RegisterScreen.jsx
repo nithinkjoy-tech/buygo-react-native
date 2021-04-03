@@ -7,6 +7,7 @@ import SubmitButton from "../components/SubmitButton";
 import AppForm from "../components/forms/AppForm";
 import colors from "../config/colors";
 import apiClient from "./../api/client";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -15,14 +16,19 @@ const validationSchema = Yup.object().shape({
   address: Yup.string().required().label("Address"),
 });
 
-function RegisterScreen(props) {
+function RegisterScreen({navigation}) {
   const [error, setError] = useState();
 
   const registerUser = async data => {
     const response = await apiClient.post("/users/register", data);
     if (!response.ok) {
-      setError(response.data);
+      return setError(response.data);
     }
+    showMessage({
+      message: "You have successfully Registerd, You can now login",
+      type: "info",
+    })
+    navigation.navigate("Login")
   };
 
   return (

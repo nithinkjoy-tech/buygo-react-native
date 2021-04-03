@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useContext} from "react";
 import {View, Text, StyleSheet} from "react-native";
 import Screen from "./../components/Screen";
 import * as Yup from "yup";
@@ -7,7 +7,7 @@ import SubmitButton from "../components/SubmitButton";
 import AppForm from "../components/forms/AppForm";
 import colors from "../config/colors";
 import apiClient from "./../api/client";
-import Storage from "../auth/storage"
+import storage from "../auth/storage"
 import CartContext from "../context/cartContext";
 
 const validationSchema = Yup.object().shape({
@@ -18,15 +18,16 @@ const validationSchema = Yup.object().shape({
 function LoginScreen({navigation}) {
   const [error, setError] = useState();
 
-  const {setIsLoggedIn}= useContext(CartContext)
+  const {setIsLoggedIn,isAdmin, setIsAdmin}= useContext(CartContext)
 
   const loginUser = async data => {
     const response = await apiClient.post("/users/login", data);
     if (!response.ok) {
       return setError(response.data);
     }
-    Storage.storeToken(response.data)
+    await storage.storeToken(response.data)
     setIsLoggedIn(true)
+    setIsAdmin(await storage.getIsAdmin());
     navigation.navigate("Products")
   };
 

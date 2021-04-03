@@ -25,7 +25,7 @@ function NavBar({navigation}) {
     FilterContext
   );
 
-  const {isLoggedIn,noOfCartItems,setNoOfCartItems}= useContext(CartContext)
+  const {isLoggedIn,noOfCartItems,setNoOfCartItems,isAdmin}= useContext(CartContext)
 
   const getNoOfCartItems = async () => {
     if (!isLoggedIn) return console.log("returned") ;
@@ -66,22 +66,30 @@ function NavBar({navigation}) {
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback>
         <>
-          {isLoggedIn?<Ionicons 
+          {(isLoggedIn&&!isAdmin)&&<Ionicons 
             name="cart"
             color="white"
             size={30}
-            style={[styles.search, {marginLeft: "83%"}]}
+            style={[styles.search, {marginLeft: "71%"}]}
             onPress={()=>navigation.navigate("Cart")}
           >
             <Badge value={noOfCartItems} status="error" />
-          </Ionicons>:<EvilIcons 
-            name="navicon" 
+          </Ionicons>}
+          {!isLoggedIn&&<EvilIcons 
+            name="navicon"  
             color="white"
             size={40}
             style={[styles.search, {marginLeft: "83%"}]}
             onPress={()=>navigation.openDrawer()} 
           >
           </EvilIcons>}
+          {isLoggedIn&&<EvilIcons 
+            name="navicon" 
+            color="white"
+            size={40}
+            style={[styles.search, {marginLeft: "86%"}]}
+            onPress={()=>navigation.openDrawer()} 
+          ></EvilIcons>}
         </>
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">

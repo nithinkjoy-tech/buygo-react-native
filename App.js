@@ -15,9 +15,11 @@ import {NavigationContainer} from "@react-navigation/native";
 import CartContext from "./app/context/cartContext";
 import storage from "./app/auth/storage";
 import userApi from "./app/api/userApi";
+import FlashMessage from "react-native-flash-message";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [noOfCartItems, setNoOfCartItems] = useState();
 
   const getIsLoggedIn = async () => {
@@ -30,9 +32,10 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <CartContext.Provider value={{isLoggedIn,setIsLoggedIn,noOfCartItems,setNoOfCartItems}} >
+      <CartContext.Provider value={{isLoggedIn,setIsLoggedIn,noOfCartItems,setNoOfCartItems,isAdmin,setIsAdmin}} >
         <AuthNavigator />
       </CartContext.Provider>
+      <FlashMessage position="top" />
     </NavigationContainer>
   );
 }
