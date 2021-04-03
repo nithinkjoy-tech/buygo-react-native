@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from "react";
+import React, {useEffect, useState} from "react";
 import {NavigationContainer} from "@react-navigation/native";
 import AuthNavigator from "./app/navigation/AuthNavigation";
 import CartContext from "./app/context/cartContext";
@@ -14,13 +14,26 @@ export default function App() {
     setIsLoggedIn(await storage.getUser());
   };
 
+  const setIsAdmin = async () => {
+    setIsAdmin(await storage.getIsAdmin());
+  };
+
   useEffect(() => {
     getIsLoggedIn();
   }, []);
 
   return (
     <NavigationContainer>
-      <CartContext.Provider value={{isLoggedIn,setIsLoggedIn,noOfCartItems,setNoOfCartItems,isAdmin,setIsAdmin}} >
+      <CartContext.Provider
+        value={{
+          isLoggedIn,
+          setIsLoggedIn,
+          noOfCartItems,
+          setNoOfCartItems,
+          isAdmin,
+          setIsAdmin,
+        }}
+      >
         <AuthNavigator />
       </CartContext.Provider>
       <FlashMessage position="top" />
